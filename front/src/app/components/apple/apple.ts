@@ -3,6 +3,7 @@ export class Apple {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   private lastTime: number;
+  private image: HTMLImageElement;
   private settings = {
     unitMaximum: 20,
     radius: 15,
@@ -17,6 +18,8 @@ export class Apple {
     this.canvas = canvas;
     this.context = canvas.getContext('2d')!;
     this.lastTime = new Date().getTime();
+    this.image = new Image();
+    this.image.src = 'assets/images/apple.png';
     this.init();
   }
 
@@ -105,8 +108,6 @@ export class Apple {
       };
 
       if (unit.cals === false) {
-        // Skip of pre-calculated units.
-
         for (let key in self.units) {
           if (key === idx) {
             continue;
@@ -167,24 +168,29 @@ export class Apple {
       unit.x += unit.velocity.x;
       unit.y -= unit.velocity.y;
 
+      let size = unit.radius * unit.mass;
+
+      self.context.save();
+      self.context.globalAlpha = Math.max(unit.opacity, 0);
       self.context.beginPath();
       self.context.arc(
         unit.x,
         self.canvas.height - unit.y,
-        unit.radius * unit.mass,
+        size,
         0,
         2 * Math.PI,
         false
       );
-
-      if (collapsed === true) {
-        self.context.fillStyle = 'red';
-      } else {
-        self.context.fillStyle = 'black';
-      }
-
-      self.context.fill();
       self.context.closePath();
+      self.context.clip();
+      self.context.drawImage(
+        this.image,
+        unit.x - size,
+        self.canvas.height - unit.y - size,
+        size * 2,
+        size * 2
+      );
+      self.context.restore();
     }
 
     self.context.fillStyle = '#000000';
