@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { Apple } from '@app/components/apple/apple';
+import { Apple } from '@app/components/main/apple';
 
 @Component({
   selector: 'app-apple-drop',

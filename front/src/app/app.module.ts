@@ -3,16 +3,16 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { UserComponent } from './components/user/user.component';
 import { GameComponent } from './components/game/game.component';
-import { AppleDropComponent } from './components/apple/apple-drop/apple-drop.component';
+import { AppleDropComponent } from './components/main/apple-drop/apple-drop.component';
+import { MainComponent } from './components/main/main.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    UserComponent,
     GameComponent,
     AppleDropComponent,
+    MainComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
