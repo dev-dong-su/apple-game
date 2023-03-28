@@ -5,10 +5,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UserComponent } from './components/user/user.component';
 import { GameComponent } from './components/game/game.component';
-import { AppleComponent } from './components/apple/apple.component';
+import { AppleDropComponent } from './components/apple/apple-drop/apple-drop.component';
 
 @NgModule({
-  declarations: [AppComponent, UserComponent, GameComponent, AppleComponent],
+  declarations: [
+    AppComponent,
+    UserComponent,
+    GameComponent,
+    AppleDropComponent,
+  ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent],

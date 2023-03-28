@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AppleComponent } from './apple.component';
+import { AppleDropComponent } from './apple-drop.component';
 
-describe('AppleComponent', () => {
-  let component: AppleComponent;
-  let fixture: ComponentFixture<AppleComponent>;
+describe('AppleDropComponent', () => {
+  let component: AppleDropComponent;
+  let fixture: ComponentFixture<AppleDropComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AppleComponent ]
+      declarations: [ AppleDropComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AppleComponent);
+    fixture = TestBed.createComponent(AppleDropComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
