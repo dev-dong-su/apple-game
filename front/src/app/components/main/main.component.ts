@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { User } from '@app/share/models/user.model';
+import { LocalStorageService } from '@app/share/service/local-storage.service';
 import { UserService } from '@app/share/service/user.service';
 @Component({
   selector: 'app-user',
@@ -7,9 +10,21 @@ import { UserService } from '@app/share/service/user.service';
 export class MainComponent {
   userName: string = '사과';
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private localStorage: LocalStorageService,
+    private router: Router
+  ) {}
 
   userNameLength(): number {
     return (this.userName || '').length;
+  }
+
+  linkToGmaePage(): void {
+    const name = this.userName;
+    this.userService.addUser({ name } as User).subscribe((user) => {
+      this.localStorage.setLocalStorageItem('user', user);
+      this.router.navigate(['game']);
+    });
   }
 }
