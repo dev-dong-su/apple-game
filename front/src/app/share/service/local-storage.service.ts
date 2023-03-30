@@ -15,7 +15,17 @@ export class LocalStorageService {
 
   getLocalStorageItem(key: string) {
     const userData = localStorage.getItem(key);
-    return typeof userData === 'string' ? userData : JSON.parse(userData!);
+
+    if (userData == null) {
+      return null;
+    }
+
+    try {
+      const parsedValue = JSON.parse(userData);
+      return parsedValue;
+    } catch (error) {
+      return userData;
+    }
   }
 
   deleteLocalStorageItem(key: string): void {
