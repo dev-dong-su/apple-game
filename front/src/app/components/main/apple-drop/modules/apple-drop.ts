@@ -20,10 +20,9 @@ export class Apple {
     this.lastTime = new Date().getTime();
     this.image = new Image();
     this.image.src = 'assets/images/apple.png';
-    this.init();
   }
 
-  private init(): void {
+  public init(): void {
     window.onresize = () => {
       const width =
         window.innerWidth ||
@@ -36,19 +35,18 @@ export class Apple {
       this.canvas.width = width;
       this.canvas.height = height;
     };
+
     window.onresize(new UIEvent('resize'));
   }
 
   public addUnit(settings: any): boolean {
-    const self = this;
-
-    if (self.units.length >= self.settings.unitMaximum) {
+    if (this.units.length >= this.settings.unitMaximum) {
       return false;
     }
 
-    settings.radius = self.settings.radius;
+    settings.radius = this.settings.radius;
     settings.mass =
-      (Math.random() * self.settings.mass) / 2 + (self.settings.mass / 4) * 3;
+      (Math.random() * this.settings.mass) / 2 + (this.settings.mass / 4) * 3;
     settings.bounceCount = 0;
 
     settings.velocity = {
@@ -61,59 +59,56 @@ export class Apple {
   }
 
   private getVelocity(unit1: any, unit2: any): any {
-    const self = this;
     return {
       x:
-        ((unit1.mass - unit2.mass * self.settings.corFactor) /
+        ((unit1.mass - unit2.mass * this.settings.corFactor) /
           (unit1.mass + unit2.mass)) *
           unit1.velocity.x +
-        ((unit2.mass + unit2.mass * self.settings.corFactor) /
+        ((unit2.mass + unit2.mass * this.settings.corFactor) /
           (unit1.mass + unit2.mass)) *
           unit2.velocity.x,
       y:
-        ((unit1.mass - unit2.mass * self.settings.corFactor) /
+        ((unit1.mass - unit2.mass * this.settings.corFactor) /
           (unit1.mass + unit2.mass)) *
           unit1.velocity.y +
-        ((unit2.mass + unit2.mass * self.settings.corFactor) /
+        ((unit2.mass + unit2.mass * this.settings.corFactor) /
           (unit1.mass + unit2.mass)) *
           unit2.velocity.y,
     };
   }
 
   public update(): void {
-    const self = this;
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    self.context.clearRect(0, 0, self.canvas.width, self.canvas.height);
-
-    if (self.units.length < self.settings.unitMaximum) {
-      if (Math.random() <= self.settings.creationFactor) {
-        self.addUnit({
-          x: self.canvas.width * Math.random(),
-          y: self.canvas.height,
+    if (this.units.length < this.settings.unitMaximum) {
+      if (Math.random() <= this.settings.creationFactor) {
+        this.addUnit({
+          x: this.canvas.width * Math.random(),
+          y: this.canvas.height,
         });
       }
     }
 
-    for (let idx in self.units) {
-      self.units[idx].cals = false;
+    for (let idx in this.units) {
+      this.units[idx].cals = false;
     }
 
-    for (let idx in self.units) {
+    for (let idx in this.units) {
       let collapsed = false;
 
-      const unit = self.units[idx];
+      const unit = this.units[idx];
       const afterUnitPosition = {
         x: unit.x + unit.velocity.x,
         y: unit.y - unit.velocity.y,
       };
 
       if (unit.cals === false) {
-        for (let key in self.units) {
+        for (let key in this.units) {
           if (key === idx) {
             continue;
           }
 
-          const item = self.units[key];
+          const item = this.units[key];
           const afterItemPosition = {
             x: item.x + item.velocity.x,
             y: item.y - item.velocity.y,
@@ -128,8 +123,8 @@ export class Apple {
           if (distanceUnits < sumRadius) {
             collapsed = true;
 
-            const afterVelocity1 = self.getVelocity(unit, item);
-            const afterVelocity2 = self.getVelocity(item, unit);
+            const afterVelocity1 = this.getVelocity(unit, item);
+            const afterVelocity2 = this.getVelocity(item, unit);
 
             unit.velocity.x = afterVelocity1.x;
             unit.velocity.y = afterVelocity1.y;
@@ -146,7 +141,7 @@ export class Apple {
 
       if (
         unit.x + unit.velocity.x <= 0 ||
-        unit.x + unit.velocity.x + unit.radius >= self.canvas.width
+        unit.x + unit.velocity.x + unit.radius >= this.canvas.width
       ) {
         collapsed = true;
         unit.velocity.x *= -1;
@@ -154,15 +149,15 @@ export class Apple {
 
       if (unit.y - unit.velocity.y < 0) {
         if (unit.bounceCount > 5) {
-          self.units.splice(Number(idx), 1);
+          this.units.splice(Number(idx), 1);
           continue;
         } else {
           collapsed = true;
-          unit.velocity.y *= -self.settings.corFactor;
+          unit.velocity.y *= -this.settings.corFactor;
           unit.bounceCount += 1;
         }
       } else {
-        unit.velocity.y += self.settings.gravity;
+        unit.velocity.y += this.settings.gravity;
       }
 
       unit.x += unit.velocity.x;
@@ -170,31 +165,31 @@ export class Apple {
 
       let size = unit.radius * unit.mass;
 
-      self.context.save();
-      self.context.globalAlpha = Math.max(unit.opacity, 0);
-      self.context.beginPath();
-      self.context.arc(
+      this.context.save();
+      this.context.globalAlpha = Math.max(unit.opacity, 0);
+      this.context.beginPath();
+      this.context.arc(
         unit.x,
-        self.canvas.height - unit.y,
+        this.canvas.height - unit.y,
         size,
         0,
         2 * Math.PI,
         false
       );
-      self.context.closePath();
-      self.context.clip();
-      self.context.drawImage(
+      this.context.closePath();
+      this.context.clip();
+      this.context.drawImage(
         this.image,
         unit.x - size,
-        self.canvas.height - unit.y - size,
+        this.canvas.height - unit.y - size,
         size * 2,
         size * 2
       );
-      self.context.restore();
+      this.context.restore();
     }
 
-    self.context.fillStyle = '#000000';
-    self.context.fillText(
+    this.context.fillStyle = '#000000';
+    this.context.fillText(
       parseInt(String(1000 / (new Date().getTime() - Number(this.lastTime)))) +
         ' fps',
       this.canvas.width - 50,
@@ -203,7 +198,7 @@ export class Apple {
     this.lastTime = new Date().getTime();
 
     window.requestAnimationFrame(() => {
-      self.update.call(self);
+      this.update.call(this);
     });
   }
 }

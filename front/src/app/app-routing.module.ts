@@ -4,8 +4,9 @@ import { GameComponent } from '@components/game/game.component';
 import { MainComponent } from './components/main/main.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home', component: MainComponent },
   { path: 'game', component: GameComponent },
-  { path: '', component: MainComponent },
 ];
 
 @NgModule({
