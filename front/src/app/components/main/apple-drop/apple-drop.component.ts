@@ -9,10 +9,13 @@ export class AppleDropComponent implements AfterViewInit {
   @ViewChild('dropApple', { static: false })
   canvasRef!: ElementRef<HTMLCanvasElement>;
 
+  drawCanvas!: Apple;
+
   ngAfterViewInit(): void {
     const canvas = this.canvasRef.nativeElement;
-    const unit = new Apple(canvas);
+    this.drawCanvas = new Apple(canvas);
 
-    unit.update();
+    this.drawCanvas.init();
+    this.drawCanvas.update();
   }
 }
