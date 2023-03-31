@@ -1,4 +1,4 @@
-export class Apple {
+export class AppleDrop {
   private units: any[];
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;

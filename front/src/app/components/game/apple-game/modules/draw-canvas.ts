@@ -1,13 +1,15 @@
 import { Drag } from '@components/game/apple-game/modules/drag';
-import { Apple } from './apple';
+import { Apple } from '@components/game/apple-game/modules/apple';
 
 export class DrawCanvas {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private lastTime: number;
   private drag: Drag;
-  private units: Apple[];
+  public units: Apple[];
   private rect: any;
+  private applesInDragArea: Apple[] = [];
+  public droppedApples: Apple[] = [];
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -16,7 +18,7 @@ export class DrawCanvas {
     this.ctx.lineWidth = 2;
     this.units = [];
     this.lastTime = new Date().getTime();
-    this.drag = new Drag(canvas);
+    this.drag = new Drag(canvas, this);
     this.rect = this.canvas.parentElement!.getBoundingClientRect();
     this.generateApples();
 
@@ -49,7 +51,7 @@ export class DrawCanvas {
     this.canvas.onmousemove = (event) => this.drag.onMouseMove(event);
   }
 
-  private generateApples(): void {
+  generateApples(): void {
     const rows = 10;
     const columns = 17;
 
@@ -68,6 +70,84 @@ export class DrawCanvas {
     }
   }
 
+  highlightApplesInDragArea(): void {
+    const x = Math.min(this.drag.startX, this.drag.currentX);
+    const y = Math.min(this.drag.startY, this.drag.currentY);
+    const width = Math.abs(this.drag.startX - this.drag.currentX);
+    const height = Math.abs(this.drag.startY - this.drag.currentY);
+
+    this.applesInDragArea = this.units.filter((apple) => {
+      const centerX = apple.position.x + apple.radius;
+      const centerY = apple.position.y + apple.radius;
+
+      return (
+        centerX >= x &&
+        centerX <= x + width &&
+        centerY >= y &&
+        centerY <= y + height
+      );
+    });
+
+    this.applesInDragArea.forEach((apple) => {
+      this.ctx.strokeStyle = 'yellow';
+      this.ctx.lineWidth = 3;
+      this.ctx.beginPath();
+      this.ctx.arc(
+        apple.position.x + apple.radius,
+        apple.position.y + apple.radius,
+        apple.radius,
+        0,
+        2 * Math.PI
+      );
+      this.ctx.stroke();
+    });
+  }
+
+  clearHighlightApplesInDragArea(): void {
+    this.applesInDragArea = [];
+  }
+
+  checkApplesInDragArea(
+    x: number,
+    y: number,
+    width: number,
+    height: number
+  ): void {
+    let sum = 0;
+    this.applesInDragArea = [];
+
+    this.units.forEach((apple) => {
+      const centerX = apple.position.x + apple.radius;
+      const centerY = apple.position.y + apple.radius;
+
+      if (
+        centerX >= x &&
+        centerX <= x + width &&
+        centerY >= y &&
+        centerY <= y + height
+      ) {
+        sum += apple.number;
+        this.applesInDragArea.push(apple);
+      }
+    });
+
+    if (sum === 10) {
+      this.droppedApples.push(...this.applesInDragArea);
+      this.units = this.units.filter((apple) => {
+        const centerX = apple.position.x + apple.radius;
+        const centerY = apple.position.y + apple.radius;
+
+        return !(
+          centerX >= x &&
+          centerX <= x + width &&
+          centerY >= y &&
+          centerY <= y + height
+        );
+      });
+      this.applesInDragArea = [];
+    }
+  }
+
   update(): void {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -81,6 +161,7 @@ export class DrawCanvas {
         height
       );
       this.ctx.stroke();
+      this.highlightApplesInDragArea();
     }
 
     this.units.forEach((apple) => {
@@ -92,8 +173,39 @@ export class DrawCanvas {
         apple.radius * 2
       );
 
-      this.ctx.font = `${apple.radius}px Poor Story`;
-      this.ctx.fillStyle = '#FFFFFF';
+      this.ctx.font = `${apple.radius + 1}px Poor Story`;
+      this.ctx.fillStyle = '#f1f5f9';
+      this.ctx.textAlign = 'center';
+      this.ctx.textBaseline = 'middle';
+      this.ctx.fillText(
+        apple.number.toString(),
+        apple.position.x + apple.radius,
+        apple.position.y + apple.radius
+      );
+    });
+
+    this.droppedApples.forEach((apple) => {
+      apple.velocity.y -= Apple.gravity;
+
+      apple.position.x += apple.velocity.x;
+      apple.position.y -= apple.velocity.y;
+
+      if (apple.position.y - apple.radius <= 0) {
+        this.droppedApples = this.droppedApples.filter((a) => a !== apple);
+      }
+    });
+
+    this.droppedApples.forEach((apple) => {
+      this.ctx.drawImage(
+        apple.image,
+        apple.position.x,
+        apple.position.y,
+        apple.radius * 2,
+        apple.radius * 2
+      );
+
+      this.ctx.font = `${apple.radius + 1}px Poor Story`;
+      this.ctx.fillStyle = '#f1f5f9';
       this.ctx.textAlign = 'center';
       this.ctx.textBaseline = 'middle';
       this.ctx.fillText(
