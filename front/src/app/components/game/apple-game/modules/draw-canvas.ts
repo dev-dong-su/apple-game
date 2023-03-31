@@ -1,5 +1,6 @@
 import { Drag } from '@components/game/apple-game/modules/drag';
 import { Apple } from '@components/game/apple-game/modules/apple';
+import { GameService } from '@app/share/service/game.service';
 
 export class DrawCanvas {
   private canvas: HTMLCanvasElement;
@@ -10,8 +11,10 @@ export class DrawCanvas {
   private rect: any;
   private applesInDragArea: Apple[] = [];
   public droppedApples: Apple[] = [];
+  private gameService: GameService;
+  private score: number;
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement, gameService: GameService) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d')!;
     this.ctx.strokeStyle = 'black';
@@ -20,10 +23,9 @@ export class DrawCanvas {
     this.lastTime = new Date().getTime();
     this.drag = new Drag(canvas, this);
     this.rect = this.canvas.parentElement!.getBoundingClientRect();
+    this.gameService = gameService;
+    this.score = 0;
     this.generateApples();
-
-    console.log(this.units);
-    console.log(this.rect);
   }
 
   init(): void {
@@ -145,6 +147,9 @@ export class DrawCanvas {
         );
       });
       this.applesInDragArea = [];
+
+      const newScore = (this.score += 10);
+      this.gameService.updateScore(newScore);
     }
   }
 
