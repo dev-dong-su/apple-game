@@ -1,3 +1,5 @@
+import { DrawCanvas } from '@components/game/apple-game/modules/draw-canvas';
+
 export class Drag {
   public startX: number;
   public startY: number;
@@ -7,7 +9,10 @@ export class Drag {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    private drawCanvasInstance: DrawCanvas
+  ) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d')!;
     this.startX = 0;
@@ -31,13 +36,22 @@ export class Drag {
 
   onMouseUp(): void {
     this.isDrawing = false;
+
+    this.drawCanvasInstance.clearHighlightApplesInDragArea();
+
+    const x = Math.min(this.startX, this.currentX);
+    const y = Math.min(this.startY, this.currentY);
+    const width = Math.abs(this.startX - this.currentX);
+    const height = Math.abs(this.startY - this.currentY);
+
+    this.drawCanvasInstance.checkApplesInDragArea(x, y, width, height);
   }
 
   drawRectangle(x: number, y: number, width: number, height: number): void {
     this.ctx.beginPath();
     this.ctx.rect(x, y, width, height);
 
-    this.ctx.fillStyle = 'rgba(248, 114, 114, 0.52)';
+    this.ctx.fillStyle = 'rgba(248, 114, 114, 0.3)';
     this.ctx.fill();
 
     this.ctx.strokeStyle = 'rgba(248, 114, 114, 1)';
