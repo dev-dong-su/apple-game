@@ -41,7 +41,6 @@ export class DrawCanvas {
       this.canvas.style.height = `${height}px`;
 
       this.ctx.scale(devicePixelRatio, devicePixelRatio);
-      console.log((width * devicePixelRatio) / 15);
     };
 
     window.onresize(new UIEvent('resize'));
