@@ -13,7 +13,7 @@ export class GameComponent implements OnInit {
   name: string = '';
   gameStarted: boolean = false;
   score$: Observable<number>;
-  timeRemaining: number = 10;
+  timeRemaining: number = 120;
   countdownTimer: any;
   finalScore: number | null = null;
 
