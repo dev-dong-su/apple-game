@@ -11,7 +11,11 @@ import { Observable } from 'rxjs/internal/Observable';
 export class GameComponent implements OnInit {
   id: number = 0;
   name: string = '';
+  gameStarted: boolean = false;
   score$: Observable<number>;
+  timeRemaining: number = 10;
+  countdownTimer: any;
+  finalScore: number | null = null;
 
   constructor(
     private userService: UserService,
@@ -19,6 +23,22 @@ export class GameComponent implements OnInit {
     private gameService: GameService
   ) {
     this.score$ = gameService.score$;
+  }
+
+  startGame(): void {
+    this.gameStarted = true;
+    this.startCountdown();
+  }
+
+  startCountdown(): void {
+    this.countdownTimer = setInterval(() => {
+      this.timeRemaining -= 1;
+      if (this.timeRemaining <= 0) {
+        clearInterval(this.countdownTimer);
+        this.gameStarted = false;
+        this.finalScore = this.gameService.getScore();
+      }
+    }, 1000);
   }
 
   ngOnInit(): void {

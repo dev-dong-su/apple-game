@@ -41,7 +41,6 @@ export class DrawCanvas {
       this.canvas.style.height = `${height}px`;
 
       this.ctx.scale(devicePixelRatio, devicePixelRatio);
-      console.log((width * devicePixelRatio) / 15);
     };
 
     window.onresize(new UIEvent('resize'));
@@ -105,51 +104,22 @@ export class DrawCanvas {
     });
   }
 
-  clearHighlightApplesInDragArea(): void {
-    this.applesInDragArea = [];
-  }
-
-  checkApplesInDragArea(
-    x: number,
-    y: number,
-    width: number,
-    height: number
-  ): void {
+  checkApplesInDragArea(): void {
     let sum = 0;
-    this.applesInDragArea = [];
 
-    this.units.forEach((apple) => {
-      const centerX = apple.position.x + apple.radius;
-      const centerY = apple.position.y + apple.radius;
-
-      if (
-        centerX >= x &&
-        centerX <= x + width &&
-        centerY >= y &&
-        centerY <= y + height
-      ) {
-        sum += apple.number;
-        this.applesInDragArea.push(apple);
-      }
+    this.applesInDragArea.forEach((apple) => {
+      sum += apple.number;
     });
 
     if (sum === 10) {
       this.droppedApples.push(...this.applesInDragArea);
-      this.units = this.units.filter((apple) => {
-        const centerX = apple.position.x + apple.radius;
-        const centerY = apple.position.y + apple.radius;
+      this.units = this.units.filter(
+        (apple) => !this.applesInDragArea.includes(apple)
+      );
 
-        return !(
-          centerX >= x &&
-          centerX <= x + width &&
-          centerY >= y &&
-          centerY <= y + height
-        );
-      });
-      this.applesInDragArea = [];
-
-      const newScore = (this.score += 10);
+      const newScore = (this.score += this.applesInDragArea.length);
       this.gameService.updateScore(newScore);
+      this.applesInDragArea = [];
     }
   }
 
@@ -190,17 +160,21 @@ export class DrawCanvas {
     });
 
     this.droppedApples.forEach((apple) => {
-      apple.velocity.y -= Apple.gravity;
+      apple.velocity.y -= apple.gravity;
 
       apple.position.x += apple.velocity.x;
       apple.position.y -= apple.velocity.y;
 
-      if (apple.position.y - apple.radius <= 0) {
-        this.droppedApples = this.droppedApples.filter((a) => a !== apple);
+      if (apple.position.y + apple.radius * 2 >= this.canvas.height) {
+        apple.toRemove = true;
       }
-    });
 
-    this.droppedApples.forEach((apple) => {
+      if (apple.position.y + apple.radius * 2 >= this.canvas.height) {
+        this.droppedApples = this.droppedApples.filter(
+          (apple) => !apple.toRemove
+        );
+      }
+
       this.ctx.drawImage(
         apple.image,
         apple.position.x,

@@ -37,14 +37,12 @@ export class Drag {
   onMouseUp(): void {
     this.isDrawing = false;
 
-    this.drawCanvasInstance.clearHighlightApplesInDragArea();
-
     const x = Math.min(this.startX, this.currentX);
     const y = Math.min(this.startY, this.currentY);
     const width = Math.abs(this.startX - this.currentX);
     const height = Math.abs(this.startY - this.currentY);
 
-    this.drawCanvasInstance.checkApplesInDragArea(x, y, width, height);
+    this.drawCanvasInstance.checkApplesInDragArea();
   }
 
   drawRectangle(x: number, y: number, width: number, height: number): void {
