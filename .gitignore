@@ -41,6 +41,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-env.json
+.env
 
 /apple-venv/
