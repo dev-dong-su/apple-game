@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { User } from '@app/share/models/user.model';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { GameService } from '@app/share/service/game.service';
 import { LocalStorageService } from '@app/share/service/local-storage.service';
 import { UserService } from '@app/share/service/user.service';
 import { Observable } from 'rxjs/internal/Observable';
+import { DrawCanvas } from './apple-game/modules/draw-canvas';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
 })
 export class GameComponent implements OnInit {
+  drawCanvasRef!: ElementRef<DrawCanvas>;
   id: number = 0;
   name: string = '';
   gameStarted: boolean = false;
@@ -16,9 +17,9 @@ export class GameComponent implements OnInit {
   timeRemaining: number = 120;
   countdownTimer: any;
   finalScore: number | null = null;
+  bestScore: number | null = null;
 
   constructor(
-    private userService: UserService,
     private localStorage: LocalStorageService,
     private gameService: GameService
   ) {
@@ -37,13 +38,21 @@ export class GameComponent implements OnInit {
         clearInterval(this.countdownTimer);
         this.gameStarted = false;
         this.finalScore = this.gameService.getScore();
+        this.timeRemaining = 120;
+        if (this.bestScore && this.finalScore > this.bestScore) {
+          this.bestScore = this.finalScore;
+        }
       }
     }, 1000);
   }
 
   ngOnInit(): void {
     const user = this.localStorage.getLocalStorageItem('user');
-    this.id = user.id;
-    this.name = user.name;
+    this.name = user.username;
+    this.bestScore = user.best_score;
+  }
+
+  ngOnDestroy() {
+    this.countdownTimer.destroy();
   }
 }

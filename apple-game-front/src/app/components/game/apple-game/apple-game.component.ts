@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { GameService } from '@app/share/service/game.service';
 import { DrawCanvas } from '@components/game/apple-game/modules/draw-canvas';
 @Component({

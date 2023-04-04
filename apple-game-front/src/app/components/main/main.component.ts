@@ -7,7 +7,7 @@ import { UserService } from '@app/share/service/user.service';
   templateUrl: './main.component.html',
 })
 export class MainComponent {
-  userName: string = '사과';
+  username: string = '사과';
 
   constructor(
     private userService: UserService,
@@ -16,13 +16,12 @@ export class MainComponent {
   ) {}
 
   userNameLength(): number {
-    return (this.userName || '').length;
+    return (this.username || '').length;
   }
 
   linkToGmaePage(): void {
-    const name = this.userName;
-    this.userService.addUser(name).subscribe((user) => {
-      this.localStorage.setLocalStorageItem('user', user);
+    const name = this.username;
+    this.userService.addUser(name).subscribe(() => {
       this.router.navigate(['game']);
     });
   }
