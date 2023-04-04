@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './share/service/in-memory-data.service';
+import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,8 +29,14 @@ import { AppleGameComponent } from './components/game/apple-game/apple-game.comp
     HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
       dataEncapsulation: false,
     }),
+    JwtModule.forRoot({
+      config: {
+        allowedDomains: ['localhost:'],
+        disallowedRoutes: ['http://example.com/auth/login'],
+      },
+    }),
   ],
-  providers: [],
+  providers: [JwtHelperService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '@app/share/models/user.model';
 import { LocalStorageService } from '@app/share/service/local-storage.service';
 import { UserService } from '@app/share/service/user.service';
 @Component({
@@ -22,7 +21,7 @@ export class MainComponent {
 
   linkToGmaePage(): void {
     const name = this.userName;
-    this.userService.addUser({ name } as User).subscribe((user) => {
+    this.userService.addUser(name).subscribe((user) => {
       this.localStorage.setLocalStorageItem('user', user);
       this.router.navigate(['game']);
     });
