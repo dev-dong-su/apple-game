@@ -7,7 +7,7 @@
 /bazel-out
 
 # Node
-/node_modules
+/apple-game-front/node_modules
 npm-debug.log
 yarn-error.log
 
@@ -29,14 +29,18 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
+/apple-game-front/.angular/cache
+/apple-game-front/.sass-cache/
+/apple-game-front/connect.lock
+/apple-game-front/coverage
+/apple-game-front/libpeerconnection.log
 testem.log
-/typings
+/apple-game-front/typings
 
 # System files
 .DS_Store
 Thumbs.db
+
+env.json
+
+/apple-venv/
