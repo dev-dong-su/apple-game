@@ -1,5 +1,7 @@
+import json
 import os
 import jwt
+from django.shortcuts import get_object_or_404
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -18,10 +20,10 @@ class UserCreateAPIView(APIView):
 
         existing_user = User.objects.filter(username=username).first()
         if existing_user:
-            payload = {'username': existing_user.username}
             try:
-                payload = jwt.encode(payload, os.getenv('SECRET_KEY'), algorithm='HS256')
-                return Response(payload, status=status.HTTP_200_OK)
+                    
+                access_token = jwt.encode({'username': existing_user.username, 'best_score': existing_user.best_score}, os.getenv('SECRET_KEY'), algorithm='HS256')
+                return Response(access_token, status=status.HTTP_200_OK)
             except jwt.InvalidTokenError:
                 raise exceptions.AuthenticationFailed('Invalid access token')
 
@@ -30,20 +32,22 @@ class UserCreateAPIView(APIView):
         if serializer.is_valid():
             user = serializer.save()
 
-            payload = { 'username': user.username }
-            access_token = jwt.encode(payload, os.getenv('SECRET_KEY'), algorithm='HS256')
+            access_token = jwt.encode({ 'username': user.username }, os.getenv('SECRET_KEY'), algorithm='HS256')
             return Response(access_token, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class UpdateUserAPIView(APIView):
-    
-    def get(self, request, *args, **kwargs):
-        user_id = request.GET.get('id', None)
+class UserUpdateAPIView(APIView):
+    serializer_class = UserSerializer
 
-        if user_id is not None:
-            try:
-                user = User.objects.get(id=user_id)
-                return Response({'username': user.username}, status=status.HTTP_200_OK)
-            except User.DoesNotExist:
-                return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-        return Response({'error': 'ID not provided'}, status=status.HTTP_400_BAD_REQUEST)
+    def put(self, request, *args, **kwargs):
+        username = request.data.get('username')
+        bestScore = request.data.get('best_score')
+        user = get_object_or_404(User, username=username)
+
+        serializer = self.serializer_class(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+
+            access_token = jwt.encode({'username': username, 'best_score': bestScore}, os.getenv('SECRET_KEY'), algorithm='HS256')
+            return Response(access_token, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

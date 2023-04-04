@@ -6,6 +6,7 @@ import { HandleErrorService } from './handle-error.service';
 import { LocalStorageService } from './local-storage.service';
 import jwtDecode from 'jwt-decode';
 import { Router } from '@angular/router';
+import * as CryptoJS from 'crypto-js';
 
 @Injectable({
   providedIn: 'root',
@@ -23,19 +24,6 @@ export class UserService {
     private error: HandleErrorService,
     private localStorageService: LocalStorageService
   ) {}
-
-  getUser(): Observable<User> {
-    return this.http
-      .get<User>(this.userUrl)
-      .pipe(catchError(this.error.handleError<User>('getUser')));
-  }
-
-  getUsers(): Observable<User[]> {
-    return this.http
-      .get<User[]>(this.userUrl)
-      .pipe(catchError(this.error.handleError<User[]>('getUsers', [])));
-  }
-
   addUser(username: string): Observable<User> {
     return this.http
       .post<User>(
@@ -57,11 +45,12 @@ export class UserService {
       );
   }
 
-  updateUser(user: User) {
+  updateUser(user: User): Observable<User> {
+    console.log('asd');
     return this.http
-      .post<User>(
-        `${this.userUrl}/user/add/`,
-        { username: user.username },
+      .put<User>(
+        `${this.userUrl}/user/update/`,
+        { username: user.userName, best_score: user.bestScore },
         this.httpOptions
       )
       .pipe(
@@ -71,10 +60,8 @@ export class UserService {
 
           const decodedToken: User = jwtDecode(token);
           this.localStorageService.setLocalStorageItem('user', decodedToken);
-
-          this.router.navigate(['game']);
         }),
-        catchError(this.error.handleError<User>('addUsers'))
+        catchError(this.error.handleError<User>('updateUser'))
       );
   }
 }

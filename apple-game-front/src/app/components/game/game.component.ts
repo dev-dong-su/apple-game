@@ -1,25 +1,25 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { User } from '@app/share/models/user.model';
 import { GameService } from '@app/share/service/game.service';
 import { LocalStorageService } from '@app/share/service/local-storage.service';
 import { UserService } from '@app/share/service/user.service';
 import { Observable } from 'rxjs/internal/Observable';
-import { DrawCanvas } from './apple-game/modules/draw-canvas';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
 })
 export class GameComponent implements OnInit {
-  drawCanvasRef!: ElementRef<DrawCanvas>;
   id: number = 0;
-  name: string = '';
+  username: string = '';
   gameStarted: boolean = false;
   score$: Observable<number>;
-  timeRemaining: number = 120;
+  timeRemaining: number = 10;
   countdownTimer: any;
   finalScore: number | null = null;
-  bestScore: number | null = null;
+  bestScore: number = 0;
 
   constructor(
+    private userService: UserService,
     private localStorage: LocalStorageService,
     private gameService: GameService
   ) {
@@ -38,9 +38,15 @@ export class GameComponent implements OnInit {
         clearInterval(this.countdownTimer);
         this.gameStarted = false;
         this.finalScore = this.gameService.getScore();
-        this.timeRemaining = 120;
-        if (this.bestScore && this.finalScore > this.bestScore) {
+        this.timeRemaining = 10;
+        if (this.finalScore > this.bestScore) {
           this.bestScore = this.finalScore;
+          this.userService
+            .updateUser({
+              userName: this.username,
+              bestScore: this.bestScore,
+            })
+            .subscribe();
         }
       }
     }, 1000);
@@ -48,8 +54,10 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
     const user = this.localStorage.getLocalStorageItem('user');
-    this.name = user.username;
-    this.bestScore = user.best_score;
+    this.username = user.username;
+    if (user.best_score) {
+      this.bestScore = user.best_score;
+    }
   }
 
   ngOnDestroy() {

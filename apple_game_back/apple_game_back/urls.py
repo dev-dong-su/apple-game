@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from apple_game.views import UserCreateAPIView
+from apple_game.views import UserCreateAPIView, UserUpdateAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
     path('user/add/', UserCreateAPIView.as_view(), name='user_add'),
+    path('user/update/', UserUpdateAPIView.as_view(), name='user_update')
 ]
