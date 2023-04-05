@@ -5,7 +5,7 @@ import { DrawCanvas } from '@components/game/apple-game/modules/draw-canvas';
   selector: 'app-apple-game',
   templateUrl: './apple-game.component.html',
 })
-export class AppleGameComponent {
+export class AppleGameComponent implements OnDestroy {
   @ViewChild('appleGame', { static: false })
   canvasRef!: ElementRef<HTMLCanvasElement>;
 
@@ -19,5 +19,9 @@ export class AppleGameComponent {
 
     this.drawCanvas.init();
     this.drawCanvas.update();
+  }
+
+  ngOnDestroy(): void {
+    this.drawCanvas.destroy();
   }
 }

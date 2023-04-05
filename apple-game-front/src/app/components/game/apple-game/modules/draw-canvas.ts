@@ -28,6 +28,13 @@ export class DrawCanvas {
     this.generateApples();
   }
 
+  destroy(): void {
+    window.onresize = null;
+    this.canvas.onmousedown = null;
+    this.canvas.onmouseup = null;
+    this.canvas.onmousemove = null;
+  }
+
   init(): void {
     window.onresize = () => {
       const width = this.rect.width;
