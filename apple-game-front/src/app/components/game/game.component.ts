@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from '@app/share/models/user.model';
 import { GameService } from '@app/share/service/game.service';
 import { LocalStorageService } from '@app/share/service/local-storage.service';
@@ -21,7 +22,8 @@ export class GameComponent implements OnInit {
   constructor(
     private userService: UserService,
     private localStorage: LocalStorageService,
-    private gameService: GameService
+    private gameService: GameService,
+    private router: Router
   ) {
     this.score$ = gameService.score$;
   }
@@ -34,6 +36,7 @@ export class GameComponent implements OnInit {
   startCountdown(): void {
     this.countdownTimer = setInterval(() => {
       this.timeRemaining -= 1;
+      console.log(1);
       if (this.timeRemaining <= 0) {
         clearInterval(this.countdownTimer);
         this.gameStarted = false;
@@ -43,8 +46,8 @@ export class GameComponent implements OnInit {
           this.bestScore = this.finalScore;
           this.userService
             .updateUser({
-              userName: this.username,
-              bestScore: this.bestScore,
+              username: this.username,
+              best_score: this.bestScore,
             })
             .subscribe();
         }
@@ -60,7 +63,11 @@ export class GameComponent implements OnInit {
     }
   }
 
+  linkToRangkingPage(): void {
+    this.router.navigate(['ranking']);
+  }
+
   ngOnDestroy() {
-    this.countdownTimer.destroy();
+    clearInterval(this.countdownTimer);
   }
 }

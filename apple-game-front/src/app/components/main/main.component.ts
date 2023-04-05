@@ -9,11 +9,7 @@ import { UserService } from '@app/share/service/user.service';
 export class MainComponent {
   username: string = '사과';
 
-  constructor(
-    private userService: UserService,
-    private localStorage: LocalStorageService,
-    private router: Router
-  ) {}
+  constructor(private userService: UserService, private router: Router) {}
 
   userNameLength(): number {
     return (this.username || '').length;

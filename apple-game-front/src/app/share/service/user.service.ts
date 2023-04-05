@@ -24,6 +24,7 @@ export class UserService {
     private error: HandleErrorService,
     private localStorageService: LocalStorageService
   ) {}
+
   addUser(username: string): Observable<User> {
     return this.http
       .post<User>(
@@ -46,11 +47,10 @@ export class UserService {
   }
 
   updateUser(user: User): Observable<User> {
-    console.log('asd');
     return this.http
       .put<User>(
         `${this.userUrl}/user/update/`,
-        { username: user.userName, best_score: user.bestScore },
+        { username: user.username, best_score: user.best_score },
         this.httpOptions
       )
       .pipe(
@@ -63,5 +63,11 @@ export class UserService {
         }),
         catchError(this.error.handleError<User>('updateUser'))
       );
+  }
+
+  getUsers(): Observable<User[]> {
+    return this.http
+      .get<User[]>(`${this.userUrl}/user/all/`)
+      .pipe(catchError(this.error.handleError<User[]>('getUsers')));
   }
 }

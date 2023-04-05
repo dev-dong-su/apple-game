@@ -1,3 +1,3 @@
 export class User {
-  constructor(public userName: string, public bestScore: number | null) {}
+  constructor(public username: string, public best_score: number | null) {}
 }
