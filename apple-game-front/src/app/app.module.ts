@@ -12,6 +12,7 @@ import { AppleDropComponent } from './components/main/apple-drop/apple-drop.comp
 import { MainComponent } from './components/main/main.component';
 import { AppleGameComponent } from './components/game/apple-game/apple-game.component';
 import { RankingComponent } from './components/ranking/ranking.component';
+import { MenuComponent } from './components/menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { RankingComponent } from './components/ranking/ranking.component';
     MainComponent,
     AppleGameComponent,
     RankingComponent,
+    MenuComponent,
   ],
   imports: [
     BrowserModule,

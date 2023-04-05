@@ -36,7 +36,6 @@ export class GameComponent implements OnInit {
   startCountdown(): void {
     this.countdownTimer = setInterval(() => {
       this.timeRemaining -= 1;
-      console.log(1);
       if (this.timeRemaining <= 0) {
         clearInterval(this.countdownTimer);
         this.gameStarted = false;
@@ -45,10 +44,13 @@ export class GameComponent implements OnInit {
         if (this.finalScore > this.bestScore) {
           this.bestScore = this.finalScore;
           this.userService
-            .updateUser({
-              username: this.username,
-              best_score: this.bestScore,
-            })
+            .updateUser(
+              {
+                username: this.username,
+                best_score: this.bestScore,
+              },
+              null
+            )
             .subscribe();
         }
       }
@@ -65,6 +67,10 @@ export class GameComponent implements OnInit {
 
   linkToRangkingPage(): void {
     this.router.navigate(['ranking']);
+  }
+
+  linkToMemuPage(): void {
+    this.router.navigate(['menu']);
   }
 
   ngOnDestroy() {

@@ -22,7 +22,6 @@ class UserCreateAPIView(APIView):
         existing_user = User.objects.filter(username=username).first()
         if existing_user:
             try:
-                    
                 access_token = jwt.encode({'username': existing_user.username, 'best_score': existing_user.best_score}, os.getenv('SECRET_KEY'), algorithm='HS256')
                 return Response(access_token, status=status.HTTP_200_OK)
             except jwt.InvalidTokenError:
@@ -42,14 +41,19 @@ class UserUpdateAPIView(APIView):
 
     def put(self, request, *args, **kwargs):
         username = request.data.get('username')
-        bestScore = request.data.get('best_score')
+        best_score = request.data.get('best_score')
+        new_name = request.data.get('new_name', None)
         user = get_object_or_404(User, username=username)
+        
+        update_data = request.data
+        if new_name is not None:
+            update_data['username'] = new_name
 
-        serializer = self.serializer_class(user, data=request.data, partial=True)
+        serializer = self.serializer_class(user, data=update_data, partial=True)
         if serializer.is_valid():
             serializer.save()
 
-            access_token = jwt.encode({'username': username, 'best_score': bestScore}, os.getenv('SECRET_KEY'), algorithm='HS256')
+            access_token = jwt.encode({'username': new_name if new_name else username, 'best_score': best_score}, os.getenv('SECRET_KEY'), algorithm='HS256')
             return Response(access_token, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

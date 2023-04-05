@@ -46,11 +46,15 @@ export class UserService {
       );
   }
 
-  updateUser(user: User): Observable<User> {
+  updateUser(user: User, new_name: string | null): Observable<User> {
     return this.http
       .put<User>(
         `${this.userUrl}/user/update/`,
-        { username: user.username, best_score: user.best_score },
+        {
+          username: user.username,
+          best_score: user.best_score,
+          new_name: new_name,
+        },
         this.httpOptions
       )
       .pipe(
