@@ -10,11 +10,6 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
-
-class Score(models.Model):
-    score = models.IntegerField()
-    user = models.ForeignKey(User, related_name='scores', on_delete=models.CASCADE)
-    user_best_score = models.ForeignKey(User, related_name='best_scores', on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.user.username}: {self.score}"
+    
+    class Meta:
+        ordering = ['-best_score']

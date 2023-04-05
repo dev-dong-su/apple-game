@@ -4,6 +4,7 @@ import jwt
 from django.shortcuts import get_object_or_404
 
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -51,3 +52,7 @@ class UserUpdateAPIView(APIView):
             access_token = jwt.encode({'username': username, 'best_score': bestScore}, os.getenv('SECRET_KEY'), algorithm='HS256')
             return Response(access_token, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UsersListAPIView(ListAPIView):
+    queryset = User.objects.filter(best_score__isnull=False)
+    serializer_class = UserSerializer
