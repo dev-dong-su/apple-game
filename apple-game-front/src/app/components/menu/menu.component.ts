@@ -31,6 +31,7 @@ export class MenuComponent implements OnInit {
   userOut(): void {
     this.localStorageService.deleteLocalStorageItem('user');
     this.localStorageService.deleteLocalStorageItem('access_token');
+    this.router.navigate(['home']);
   }
 
   changeUserName(): void {
