@@ -61,17 +61,24 @@ export class DrawCanvas {
 
   generateApples(): void {
     const rows = 10;
-    const columns = 17;
+    const columns = 18;
 
-    const availableWidth = this.rect.width / columns;
-    const availableHeight = this.rect.height / rows;
+    const borderOffset = 30;
+
+    const availableWidth = (this.rect.width - borderOffset * 2) / columns;
+    const availableHeight = (this.rect.height - borderOffset * 2) / rows;
 
     const appleRadius = Math.min(availableWidth, availableHeight) * 0.4;
 
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < columns; j++) {
-        const x = j * availableWidth + availableWidth / 2 - appleRadius;
-        const y = i * availableHeight + availableHeight / 2 - appleRadius;
+        const x =
+          j * availableWidth + availableWidth / 2 - appleRadius + borderOffset;
+        const y =
+          i * availableHeight +
+          availableHeight / 2 -
+          appleRadius +
+          borderOffset;
         const apple = new Apple(x, y, appleRadius);
         this.units.push(apple);
       }

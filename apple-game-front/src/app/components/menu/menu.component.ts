@@ -28,6 +28,11 @@ export class MenuComponent implements OnInit {
     this.router.navigate(['game']);
   }
 
+  userOut(): void {
+    this.localStorageService.deleteLocalStorageItem('user');
+    this.localStorageService.deleteLocalStorageItem('access_token');
+  }
+
   changeUserName(): void {
     this.userService
       .updateUser(

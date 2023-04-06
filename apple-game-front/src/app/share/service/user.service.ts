@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, catchError, tap } from 'rxjs';
+import { Observable, catchError, map, tap } from 'rxjs';
 import { User } from '../models/user.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HandleErrorService } from './handle-error.service';
@@ -14,10 +14,6 @@ import * as CryptoJS from 'crypto-js';
 export class UserService {
   private userUrl = 'http://localhost:8000';
 
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
-
   constructor(
     private router: Router,
     private http: HttpClient,
@@ -25,12 +21,28 @@ export class UserService {
     private localStorageService: LocalStorageService
   ) {}
 
+  getHttpOptions() {
+    const token = this.localStorageService.getLocalStorageItem('access_token');
+    if (token) {
+      return {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        }),
+      };
+    } else {
+      return {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      };
+    }
+  }
+
   addUser(username: string): Observable<User> {
     return this.http
       .post<User>(
         `${this.userUrl}/user/add/`,
         { username: username },
-        this.httpOptions
+        this.getHttpOptions()
       )
       .pipe(
         tap((response: any) => {
@@ -55,7 +67,7 @@ export class UserService {
           best_score: user.best_score,
           new_name: new_name,
         },
-        this.httpOptions
+        this.getHttpOptions()
       )
       .pipe(
         tap((response: any) => {
@@ -73,5 +85,17 @@ export class UserService {
     return this.http
       .get<User[]>(`${this.userUrl}/user/all/`)
       .pipe(catchError(this.error.handleError<User[]>('getUsers')));
+  }
+
+  checkUserToken(): Observable<boolean> {
+    return this.http
+      .get<void>(`${this.userUrl}/user/user_token/`, this.getHttpOptions())
+      .pipe(
+        map(() => true),
+        catchError(async (err) => {
+          alert('토큰이 유효하지 않습니다.');
+          return false;
+        })
+      );
   }
 }
