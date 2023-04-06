@@ -12,7 +12,7 @@ import * as CryptoJS from 'crypto-js';
   providedIn: 'root',
 })
 export class UserService {
-  private userUrl = 'http://localhost:8000';
+  private userUrl = 'https://apple-game.herokuapp.com';
 
   constructor(
     private router: Router,
