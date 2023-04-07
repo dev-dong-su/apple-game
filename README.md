@@ -1,27 +1,48 @@
-# AppleGame
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.4.
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+# 🍎 Apple Game
+* **인턴으로 일하게된 회사에서 사용하는 Angular와 Django에 익숙해 지기 위한 토이 프로젝트**
+* 드래그 영역의 사과의 숫자합이 10이 되면 사과의 개수 만큼 점수를 얻는 게임.
 
-## Code scaffolding
+<div align="middle" >
+    <img src="./main.png" width="700" height="370"/>
+    <img src="./game.png" width="700" height="370" />
+    <img src="./ranking.png" width="700" height="370" />
+</div>
+<br>
+<br>
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+# 📋 목차
+- [🍎 Apple Game](#-apple-game)
+- [📋 목차](#-목차)
+- [🩻 프로젝트 구조](#-프로젝트-구조)
+- [😄 프로젝트 후기](#-프로젝트-후기)
 
-## Build
+<br>
+<br>
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+# 🩻 프로젝트 구조
 
-## Running unit tests
+<div align="middle" width="700" height="370">
+    <img src="./archi.png" />
+</div>
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+* 배포하는데 있어서 편리함을 추구한 도구 선택
+* Front는 Vercel, Back은 Heroku
+* 결과로 정말 간단한 프로젝트 아키텍처 탄생!
+* 가격도 한달에 5$로 저렴
 
-## Running end-to-end tests
+<br>
+<br>
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+# 😄 프로젝트 후기
+* 원작 게임도 정말 중독성이 강한 게임인데 정말 많은 회사 분들이 줄겨주셨다.
+* 오랜만에 순수한 개발의 재미를 느꼈고 내가 어떤 개발자가 되고 싶은지 확고해진 계기가 되었다.
+* 이에관한 회고를 notion에 정리했다!
 
-## Further help
+<div align="middle" width="700" height="370">
+    <img src="./user.jpg" />
+</div>
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+> 사과에 점령당한 점심시간
