@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { User } from '@app/share/models/user.model';
 import { GameService } from '@app/share/service/game.service';
 import { LocalStorageService } from '@app/share/service/local-storage.service';
+import { ThemeService } from '@app/share/service/theme.service';
 import { UserService } from '@app/share/service/user.service';
 import { Observable } from 'rxjs/internal/Observable';
 @Component({
@@ -14,15 +15,16 @@ export class GameComponent implements OnInit {
   username: string = '';
   gameStarted: boolean = false;
   score$: Observable<number>;
-  timeRemaining: number = 10;
+  timeRemaining: number = 120;
   countdownTimer: any;
   finalScore: number | null = null;
   bestScore: number = 0;
+  theme: any;
 
   constructor(
-    private userService: UserService,
     private localStorage: LocalStorageService,
     private gameService: GameService,
+    private themeService: ThemeService,
     private router: Router
   ) {
     this.score$ = gameService.score$;
@@ -50,6 +52,7 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
     const user = this.localStorage.getLocalStorageItem('user');
+    this.theme = this.themeService.getTheme();
     this.username = user.username;
     if (user.best_score) {
       this.bestScore = user.best_score;
