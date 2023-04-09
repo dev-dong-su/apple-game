@@ -52,7 +52,7 @@ export class GameService {
         tap((response: any) => {
           this.gameSeesionId = response.session_id;
         }),
-        catchError(this.error.handleError<any>('addUsers'))
+        catchError(this.error.handleError<any>('startGame'))
       );
   }
 
@@ -66,7 +66,7 @@ export class GameService {
       )
       .pipe(
         tap((response: any) => {}),
-        catchError(this.error.handleError<any>('addUsers'))
+        catchError(this.error.handleError<any>('endGame'))
       );
   }
 

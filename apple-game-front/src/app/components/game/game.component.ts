@@ -14,7 +14,7 @@ export class GameComponent implements OnInit {
   username: string = '';
   gameStarted: boolean = false;
   score$: Observable<number>;
-  timeRemaining: number = 120;
+  timeRemaining: number = 10;
   countdownTimer: any;
   finalScore: number | null = null;
   bestScore: number = 0;

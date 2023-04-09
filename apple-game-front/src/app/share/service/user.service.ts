@@ -89,13 +89,7 @@ export class UserService {
 
   checkUserToken(): Observable<boolean> {
     return this.http
-      .get<void>(`${this.baseURL}/user/user_token/`, this.getHttpOptions())
-      .pipe(
-        map(() => true),
-        catchError(async (err) => {
-          alert('토큰이 유효하지 않습니다.');
-          return false;
-        })
-      );
+      .get<boolean>(`${this.baseURL}/user/user_token/`, this.getHttpOptions())
+      .pipe(catchError(this.error.handleError<boolean>('getUsers')));
   }
 }
