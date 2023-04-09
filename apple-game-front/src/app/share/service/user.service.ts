@@ -6,13 +6,13 @@ import { HandleErrorService } from './handle-error.service';
 import { LocalStorageService } from './local-storage.service';
 import jwtDecode from 'jwt-decode';
 import { Router } from '@angular/router';
-import * as CryptoJS from 'crypto-js';
+import { environment } from '@app/environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private userUrl = 'https://apple-game.herokuapp.com';
+  private baseURL = environment.BASE_URL;
 
   constructor(
     private router: Router,
@@ -40,7 +40,7 @@ export class UserService {
   addUser(username: string): Observable<User> {
     return this.http
       .post<User>(
-        `${this.userUrl}/user/add/`,
+        `${this.baseURL}/user/add/`,
         { username: username },
         this.getHttpOptions()
       )
@@ -61,7 +61,7 @@ export class UserService {
   updateUser(user: User, new_name: string | null): Observable<User> {
     return this.http
       .put<User>(
-        `${this.userUrl}/user/update/`,
+        `${this.baseURL}/user/update/`,
         {
           username: user.username,
           best_score: user.best_score,
@@ -83,19 +83,13 @@ export class UserService {
 
   getUsers(): Observable<User[]> {
     return this.http
-      .get<User[]>(`${this.userUrl}/user/all/`)
+      .get<User[]>(`${this.baseURL}/user/all/`)
       .pipe(catchError(this.error.handleError<User[]>('getUsers')));
   }
 
   checkUserToken(): Observable<boolean> {
     return this.http
-      .get<void>(`${this.userUrl}/user/user_token/`, this.getHttpOptions())
-      .pipe(
-        map(() => true),
-        catchError(async (err) => {
-          alert('토큰이 유효하지 않습니다.');
-          return false;
-        })
-      );
+      .get<boolean>(`${this.baseURL}/user/user_token/`, this.getHttpOptions())
+      .pipe(catchError(this.error.handleError<boolean>('getUsers')));
   }
 }

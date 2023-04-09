@@ -8,6 +8,7 @@
       "@components/*":["app/components/*"],
       "@service/*": ["app/service/*"],
       "@share/*": ["app/share/*"],
+      "@environment/*":["app/environment/*"],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

@@ -9,7 +9,8 @@ export class HandleErrorService {
 
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.log(`${operation} failed: ${error.error.username[0]}`);
+      console.log(error);
+      alert(`${error.error.message}`);
 
       return of(result as T);
     };

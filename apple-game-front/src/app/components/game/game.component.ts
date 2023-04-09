@@ -14,7 +14,7 @@ export class GameComponent implements OnInit {
   username: string = '';
   gameStarted: boolean = false;
   score$: Observable<number>;
-  timeRemaining: number = 120;
+  timeRemaining: number = 10;
   countdownTimer: any;
   finalScore: number | null = null;
   bestScore: number = 0;
@@ -30,7 +30,9 @@ export class GameComponent implements OnInit {
 
   startGame(): void {
     this.gameStarted = true;
-    this.startCountdown();
+    this.gameService.startGame(this.username).subscribe(() => {
+      this.startCountdown();
+    });
   }
 
   startCountdown(): void {
@@ -41,18 +43,7 @@ export class GameComponent implements OnInit {
         this.gameStarted = false;
         this.finalScore = this.gameService.getScore();
         this.timeRemaining = 120;
-        if (this.finalScore > this.bestScore) {
-          this.bestScore = this.finalScore;
-          this.userService
-            .updateUser(
-              {
-                username: this.username,
-                best_score: this.bestScore,
-              },
-              null
-            )
-            .subscribe();
-        }
+        this.gameService.endGame(this.finalScore).subscribe();
       }
     }, 1000);
   }
