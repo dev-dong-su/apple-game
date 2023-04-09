@@ -19,7 +19,6 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void {
     this.theme = this.themeService.getTheme();
-    console.log(this.theme);
   }
 
   userNameLength(): number {
