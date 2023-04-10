@@ -13,8 +13,13 @@ export class DrawCanvas {
   public droppedApples: Apple[] = [];
   private gameService: GameService;
   private score: number;
+  private src: string;
 
-  constructor(canvas: HTMLCanvasElement, gameService: GameService) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    gameService: GameService,
+    src: string
+  ) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d')!;
     this.ctx.strokeStyle = 'black';
@@ -25,6 +30,7 @@ export class DrawCanvas {
     this.rect = this.canvas.parentElement!.getBoundingClientRect();
     this.gameService = gameService;
     this.score = 0;
+    this.src = src;
     this.generateApples();
   }
 
@@ -79,7 +85,7 @@ export class DrawCanvas {
           availableHeight / 2 -
           appleRadius +
           borderOffset;
-        const apple = new Apple(x, y, appleRadius);
+        const apple = new Apple(x, y, appleRadius, this.src);
         this.units.push(apple);
       }
     }

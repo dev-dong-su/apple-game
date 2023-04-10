@@ -1,11 +1,11 @@
-<div class="flex flex-col h-screen w-screen justify-center">
-  <div class="flex w-full h-16 justify-between items-center bg-amber-100">
+<div class="flex flex-col h-screen w-screen justify-center {{this.theme.main_color}}">
+  <div class="flex w-full h-16 justify-between items-center {{this.theme.background_color}}">
     <div class="flex flex-row items-center p-5 gap-2">
-      <img src="assets/images/logo.png" class="mx-auto w-8 h-8">
-      <span class="text-xl text-red-500">사과게임</span>
+      <img src="{{this.theme.logo}}" class="mx-auto w-8 h-8">
+      <span class="text-xl {{this.theme.text_color}}">{{this.theme.name}}게임</span>
     </div>
     <button type="button" (click)="(linkToGmaePage())" class="flex flex-row bg-amber-200 text-slate-600 mr-10 items-center h-12 px-2 gap-2 shadow-md rounded-md text-xl">
-      <img src="assets/images/apple.png" class="w-8 h-8"/>
+      <img src="{{this.theme.image}}" class="w-8 h-8"/>
       게임
     </button>
   </div>
@@ -15,12 +15,12 @@
     <br>
     <span>이름을 변경하고 싶다면 <br> 이름을 작성하고 변경 버튼을 눌러주세요!</span>
     <div>
-      <input [(ngModel)]="new_name" type="text"  class="w-32 mx-3 my-8 z-50 border-2 border-red-400 rounded-lg focus:border-rose-600 focus:ring-0">
-      <button type="button" (click)="changeUserName()" class="bg-red-400 text-white mx-auto w-16 py-3 shadow-md rounded-md text-md disabled:opacity-40">
+      <input [(ngModel)]="new_name" type="text"  class="{{theme.input_color}} w-32 mx-3 my-8 z-50 border-2 rounded-lg  focus:ring-0">
+      <button type="button" (click)="changeUserName()" class="{{this.theme.button_color}} mx-auto w-16 py-3 shadow-md rounded-md text-md disabled:opacity-40">
         변경
       </button>
     </div>
-    <button type="button" (click)="userOut()" class="bg-amber-200 text-slate-600 mx-auto w-32 py-4 shadow-md rounded-md text-md disabled:opacity-40 z-50">
+    <button type="button" (click)="userOut()" class="{{this.theme.background_color}} {{this.theme.info_text_color}} mx-auto w-32 py-4 shadow-md rounded-md text-md disabled:opacity-40 z-50">
       로그아웃
     </button>
   </div>

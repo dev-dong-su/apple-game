@@ -13,13 +13,13 @@ export class AppleDrop {
     creationFactor: 0.02,
   };
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement, src: string) {
     this.units = [];
     this.canvas = canvas;
     this.context = canvas.getContext('2d')!;
     this.lastTime = new Date().getTime();
     this.image = new Image();
-    this.image.src = 'assets/images/apple.png';
+    this.image.src = src;
   }
 
   public init(): void {

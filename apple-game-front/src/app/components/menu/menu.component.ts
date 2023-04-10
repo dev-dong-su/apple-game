@@ -12,7 +12,7 @@ export class MenuComponent implements OnInit {
   username: string = '';
   new_name: string = '';
   best_score: number = 0;
-  theme: object = {};
+  theme: any;
 
   constructor(
     private router: Router,
@@ -50,8 +50,6 @@ export class MenuComponent implements OnInit {
       .subscribe(() => {
         const user = this.localStorageService.getLocalStorageItem('user');
         this.username = user.username;
-
-        alert('변경 완료!');
       });
   }
 }

@@ -1,8 +1,8 @@
 <app-apple-drop></app-apple-drop>
-<div class="flex flex-col w-screen h-screen justify-center items-center mx-auto">
+<div class="flex flex-col w-screen h-screen justify-center items-center mx-auto {{this.theme.main_color}}">
   <div class="w-full text-center">
-    <img src="assets/images/logo.png" class="mx-auto w-52 h-52">
-    <span class="text-8xl {{theme.text_color}}">사과게임</span>
+    <img src="{{this.theme.logo}}" class="mx-auto w-52 h-52">
+    <span class="text-8xl {{this.theme.text_color}}">{{this.theme.name}}게임</span>
   </div>
 
   <span class="text-5xl flex items-center justify-center pt-24">
