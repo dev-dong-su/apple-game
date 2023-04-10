@@ -59,6 +59,16 @@ export class GameComponent implements OnInit {
     }
   }
 
+  changeTheme(): void {
+    const theme = this.localStorage.getLocalStorageItem('theme');
+    if (theme == 0) {
+      this.localStorage.setLocalStorageItem('theme', 1);
+    } else {
+      this.localStorage.setLocalStorageItem('theme', 0);
+    }
+    window.location.reload();
+  }
+
   linkToRangkingPage(): void {
     this.router.navigate(['ranking']);
   }

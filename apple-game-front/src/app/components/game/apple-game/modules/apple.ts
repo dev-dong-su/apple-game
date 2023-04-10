@@ -13,10 +13,10 @@ export class Apple {
     y: 0,
   };
 
-  constructor(x: number, y: number, radius: number) {
+  constructor(x: number, y: number, radius: number, src: string) {
     this.position = { x, y };
     this.image = new Image();
-    this.image.src = 'assets/images/apple.png';
+    this.image.src = src;
     this.radius = radius;
   }
 }
