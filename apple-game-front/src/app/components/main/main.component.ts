@@ -11,6 +11,7 @@ import { UserService } from '@app/share/service/user.service';
 export class MainComponent implements OnInit {
   username: string = '사과';
   theme: any;
+  isMobile: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -27,6 +28,7 @@ export class MainComponent implements OnInit {
       });
     }
     this.theme = this.themeService.getTheme();
+    this.isMobile = this.themeService.isMobileDevice();
   }
 
   userNameLength(): number {
