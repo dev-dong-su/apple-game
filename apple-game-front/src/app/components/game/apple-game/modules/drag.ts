@@ -22,25 +22,35 @@ export class Drag {
     this.isDrawing = false;
   }
 
-  onMouseDown(event: MouseEvent): void {
+  onMouseDown(event: MouseEvent | TouchEvent): void {
+    event.preventDefault();
     this.isDrawing = true;
     const rect = this.canvas.getBoundingClientRect();
-    this.startX = event.clientX - rect.left;
-    this.startY = event.clientY - rect.top;
+    const clientX =
+      'touches' in event ? event.touches[0].clientX : event.clientX;
+    const clientY =
+      'touches' in event ? event.touches[0].clientY : event.clientY;
+    this.startX = clientX - rect.left;
+    this.startY = clientY - rect.top;
+
+    this.currentX = this.startX;
+    this.currentY = this.startY;
   }
 
-  onMouseMove(event: MouseEvent): void {
-    this.currentX = event.clientX - this.canvas.getBoundingClientRect().left;
-    this.currentY = event.clientY - this.canvas.getBoundingClientRect().top;
+  onMouseMove(event: MouseEvent | TouchEvent): void {
+    event.preventDefault();
+    const clientX =
+      'touches' in event ? event.touches[0].clientX : event.clientX;
+    const clientY =
+      'touches' in event ? event.touches[0].clientY : event.clientY;
+
+    this.currentX = clientX - this.canvas.getBoundingClientRect().left;
+    this.currentY = clientY - this.canvas.getBoundingClientRect().top;
   }
 
-  onMouseUp(): void {
+  onMouseUp(event: MouseEvent | TouchEvent): void {
+    event.preventDefault();
     this.isDrawing = false;
-
-    const x = Math.min(this.startX, this.currentX);
-    const y = Math.min(this.startY, this.currentY);
-    const width = Math.abs(this.startX - this.currentX);
-    const height = Math.abs(this.startY - this.currentY);
 
     this.drawCanvasInstance.checkApplesInDragArea();
   }

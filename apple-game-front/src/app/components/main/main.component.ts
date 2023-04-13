@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LocalStorageService } from '@app/share/service/local-storage.service';
 import { ThemeService } from '@app/share/service/theme.service';
 import { UserService } from '@app/share/service/user.service';
 
@@ -14,10 +15,17 @@ export class MainComponent implements OnInit {
   constructor(
     private userService: UserService,
     private router: Router,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit(): void {
+    const token = this.localStorageService.getLocalStorageItem('access_token');
+    if (token) {
+      this.userService.checkUserToken().subscribe((good) => {
+        if (good) this.router.navigate(['game']);
+      });
+    }
     this.theme = this.themeService.getTheme();
   }
 

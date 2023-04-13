@@ -46,6 +46,9 @@ export class GameComponent implements OnInit {
         this.finalScore = this.gameService.getScore();
         this.timeRemaining = 120;
         this.gameService.endGame(this.finalScore).subscribe();
+        if (this.finalScore > this.bestScore) {
+          this.bestScore = this.finalScore;
+        }
       }
     }, 1000);
   }
