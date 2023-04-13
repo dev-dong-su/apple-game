@@ -1,4 +1,4 @@
-<div class="flex flex-col h-screen w-screen justify-center {{this.theme.main_color}}">
+<div *ngIf="!isMobile" class="flex flex-col h-screen w-screen justify-center {{this.theme.main_color}}">
   <div class="flex w-full h-16 justify-between items-center  {{this.theme.background_color}}">
     <div class="flex flex-row items-center p-5 gap-2">
       <img src="{{this.theme.logo}}" class="mx-auto w-8 h-8">
@@ -6,7 +6,7 @@
     </div>
     <div class="flex flex-row items-center gap-6 pr-10 text-xl">
       <div class="felx justify-center justify-items-center text-xl w-16 {{this.theme.info_text_color}}" *ngIf="bestScore">
-        <img src="assets/images/score.png" class="w-8 h-8 inline-block"/>: {{bestScore}}
+        <img src="assets/images/score.png" class="w-16 h-8 inline-block"/>: {{bestScore}}
       </div>
       <span class="text-xl {{this.theme.info_text_color}}">점수: {{ score$ | async }}</span>
       <span class="text-xl {{this.theme.info_text_color}}" *ngIf="gameStarted">남은 시간: {{ timeRemaining }}초</span>
@@ -23,6 +23,43 @@
     </div>
   </div>
   <div class="w-5/6 h-5/6 m-auto {{this.theme.background_color}}">
+    <div *ngIf="!gameStarted" class="flex flex-col justify-center items-center w-full h-full">
+      <button (click)="startGame()"  class="flex {{this.theme.button_color}}  items-center py-1 px-5 h-16 shadow-md rounded-md text-2xl">
+        게임 시작
+      </button>
+      <div *ngIf="finalScore !== null" class="text-xl my-4">
+        최종 점수: {{ finalScore }}
+      </div>
+    </div>
+    <app-apple-game *ngIf="gameStarted"></app-apple-game>
+  </div>
+</div>
+
+<div *ngIf="isMobile" class="flex flex-col h-screen w-screen justify-center {{this.theme.main_color}}">
+  <div *ngIf="!gameStarted" class="flex w-full h-15 justify-between items-center  {{this.theme.background_color}}">
+    <div class="flex flex-row items-center p-5 gap-2">
+      <img src="{{this.theme.logo}}" class="mx-auto w-8 h-8">
+      <span class="text-xl {{this.theme.text_color}}">{{this.theme.name}}게임</span>
+    </div>
+    <div class="flex flex-row items-center gap-6 pr-10 text-xl">
+      <div class="felx justify-center justify-items-center text-xl w-20 {{this.theme.info_text_color}}" *ngIf="bestScore">
+        <img src="assets/images/score.png" class="w-8 h-8 inline-block"/>: {{bestScore}}
+      </div>
+      <button type="button" (click)="linkToRangkingPage()" class="flex flex-row bg-amber-200 text-slate-600 mx-auto items-center h-12 px-2 gap-2 shadow-md rounded-md text-md">
+        <img src="assets/images/crown.png" class="w-10 h-10"/>
+        랭킹
+      </button>
+      <button (click)="linkToMemuPage()" class="flex {{this.theme.button_color}} items-center py-1 px-2 h-12 shadow-md rounded-md text-md">
+        <span class="">{{username}}<span> 님</span></span>
+      </button>
+      <button (click)="changeTheme()" class="flex {{this.theme.button_color}} items-center py-1 px-2 h-12 shadow-md rounded-md text-md">
+        <span class="">테마변경</span>
+      </button>
+    </div>
+  </div>
+  <div class="w-full h-full m-auto {{this.theme.background_color}}">
+    <span class="absolute right-10 text-xl {{this.theme.info_text_color}}">점수: {{ score$ | async }}</span>
+    <span class="absolute right-32 text-xl {{this.theme.info_text_color}}" *ngIf="gameStarted">남은 시간: {{ timeRemaining }}초</span>
     <div *ngIf="!gameStarted" class="flex flex-col justify-center items-center w-full h-full">
       <button (click)="startGame()"  class="flex {{this.theme.button_color}}  items-center py-1 px-5 h-16 shadow-md rounded-md text-2xl">
         게임 시작

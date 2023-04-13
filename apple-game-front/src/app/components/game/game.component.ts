@@ -20,6 +20,7 @@ export class GameComponent implements OnInit {
   finalScore: number | null = null;
   bestScore: number = 0;
   theme: any;
+  isMobile: boolean = false;
 
   constructor(
     private localStorage: LocalStorageService,
@@ -46,6 +47,9 @@ export class GameComponent implements OnInit {
         this.finalScore = this.gameService.getScore();
         this.timeRemaining = 120;
         this.gameService.endGame(this.finalScore).subscribe();
+        if (this.finalScore > this.bestScore) {
+          this.bestScore = this.finalScore;
+        }
       }
     }, 1000);
   }
@@ -57,6 +61,7 @@ export class GameComponent implements OnInit {
     if (user.best_score) {
       this.bestScore = user.best_score;
     }
+    this.isMobile = this.themeService.isMobileDevice();
   }
 
   changeTheme(): void {

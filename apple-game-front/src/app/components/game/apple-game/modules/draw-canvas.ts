@@ -60,9 +60,21 @@ export class DrawCanvas {
 
     this.canvas.onmousedown = (event) => this.drag.onMouseDown(event);
 
-    this.canvas.onmouseup = () => this.drag.onMouseUp();
+    this.canvas.onmouseup = (event) => this.drag.onMouseUp(event);
 
     this.canvas.onmousemove = (event) => this.drag.onMouseMove(event);
+
+    this.canvas.addEventListener('touchstart', (event) => {
+      this.drag.onMouseDown(event);
+    });
+
+    this.canvas.addEventListener('touchend', (event) => {
+      this.drag.onMouseUp(event);
+    });
+
+    this.canvas.addEventListener('touchmove', (event) => {
+      this.drag.onMouseMove(event);
+    });
   }
 
   generateApples(): void {

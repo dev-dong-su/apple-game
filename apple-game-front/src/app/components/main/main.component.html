@@ -1,5 +1,5 @@
 <app-apple-drop></app-apple-drop>
-<div class="flex flex-col w-screen h-screen justify-center items-center mx-auto {{this.theme.main_color}}">
+<div *ngIf="!isMobile" class="flex flex-col w-screen h-screen justify-center items-center mx-auto {{this.theme.main_color}}">
   <div class="w-full text-center">
     <img src="{{this.theme.logo}}" class="mx-auto w-52 h-52">
     <span class="text-8xl {{this.theme.text_color}}">{{this.theme.name}}게임</span>
@@ -13,4 +13,21 @@
     시작!
   </button>
   <span class="py-10 text-md">성을 제외한 자신의 이름을 입력하면 회원가입과 로그인이 됩니다! <br> 게임 화면에서 ..님 버튼을 눌러 이름을 바꿔보아요~</span>
+</div>
+
+
+<div *ngIf="isMobile" class="flex flex-col w-screen h-screen justify-center items-center mx-auto {{this.theme.main_color}}">
+  <div class="w-full text-center">
+    <img src="{{this.theme.logo}}" class="mx-auto w-16 h-16">
+    <span class="text-3xl {{this.theme.text_color}}">{{this.theme.name}}게임</span>
+  </div>
+
+  <span class="text-2xl flex items-center justify-center">
+    저는 <span class="px-4"> {{username}}</span> 입니다!
+  </span>
+  <input [(ngModel)]="username" type="text"  class="{{theme.input_color}} w-32 mx-3 my-8 z-50 border-2 rounded-lg focus:ring-0">
+  <button type="button" [disabled]="userNameLength() < 2" (click)="linkToGmaePage()" class="{{theme.button_color}} mx-auto w-32 py-4 shadow-md rounded-md text-md disabled:opacity-40 z-50">
+    시작!
+  </button>
+  <span class="pt-2 text-md">성을 제외한 자신의 이름을 입력하면 회원가입과 로그인이 됩니다! <br> 게임 화면에서 ..님 버튼을 눌러 이름을 바꿔보아요~</span>
 </div>
