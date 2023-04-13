@@ -5,8 +5,8 @@
       <span class="text-xl {{this.theme.text_color}}">{{this.theme.name}}게임</span>
     </div>
     <div class="flex flex-row items-center gap-6 pr-10 text-xl">
-      <div class="felx justify-center justify-items-center text-xl w-16 {{this.theme.info_text_color}}" *ngIf="bestScore">
-        <img src="assets/images/score.png" class="w-16 h-8 inline-block"/>: {{bestScore}}
+      <div class="felx justify-center justify-items-center text-xl w-20 {{this.theme.info_text_color}}" *ngIf="bestScore">
+        <img src="assets/images/score.png" class="w-8 h-8 inline-block"/>: {{bestScore}}
       </div>
       <span class="text-xl {{this.theme.info_text_color}}">점수: {{ score$ | async }}</span>
       <span class="text-xl {{this.theme.info_text_color}}" *ngIf="gameStarted">남은 시간: {{ timeRemaining }}초</span>
