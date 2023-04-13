@@ -188,15 +188,6 @@ export class AppleDrop {
       this.context.restore();
     }
 
-    this.context.fillStyle = '#000000';
-    this.context.fillText(
-      parseInt(String(1000 / (new Date().getTime() - Number(this.lastTime)))) +
-        ' fps',
-      this.canvas.width - 50,
-      20
-    );
-    this.lastTime = new Date().getTime();
-
     window.requestAnimationFrame(() => {
       this.update.call(this);
     });

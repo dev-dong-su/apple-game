@@ -226,17 +226,6 @@ export class DrawCanvas {
       );
     });
 
-    this.ctx.font = `12px Poor Story`;
-    this.ctx.fillStyle = '#000000';
-    this.ctx.fillText(
-      parseInt(String(1000 / (new Date().getTime() - Number(this.lastTime)))) +
-        ' fps',
-      this.canvas.width / window.devicePixelRatio - 20,
-      10
-    );
-
-    this.lastTime = new Date().getTime();
-
     window.requestAnimationFrame(() => {
       this.update.call(this);
     });

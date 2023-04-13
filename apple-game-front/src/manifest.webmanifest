@@ -1,7 +1,7 @@
 {
   "name": "apple-game",
   "short_name": "apple-game",
-  "theme_color": "#1976d2",
+  "theme_color": "#fffbeb",
   "background_color": "#fffbeb",
   "display": "fullscreen",
   "orientation": "landscape",
