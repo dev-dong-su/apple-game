@@ -78,6 +78,8 @@ export class DrawCanvas {
   }
 
   generateApples(): void {
+    this.units = [];
+
     const rows = 10;
     const columns = 18;
 

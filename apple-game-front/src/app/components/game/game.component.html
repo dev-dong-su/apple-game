@@ -8,6 +8,9 @@
       <div class="felx justify-center justify-items-center text-xl w-20 {{this.theme.info_text_color}}" *ngIf="bestScore">
         <img src="assets/images/score.png" class="w-8 h-8 inline-block"/>: {{bestScore}}
       </div>
+      <button *ngIf="gameStarted" (click)="onRefreshButtonClick()" class="w-8 h-8">
+        <img src="assets/images/refresh.png">
+      </button>
       <span class="text-xl {{this.theme.info_text_color}}">점수: {{ score$ | async }}</span>
       <span class="text-xl {{this.theme.info_text_color}}" *ngIf="gameStarted">남은 시간: {{ timeRemaining }}초</span>
       <button type="button" (click)="linkToRangkingPage()" class="flex flex-row bg-amber-200 text-slate-600 mx-auto items-center h-12 px-2 gap-2 shadow-md rounded-md text-md">
@@ -58,7 +61,10 @@
     </div>
   </div>
   <div class="w-full h-full m-auto {{this.theme.background_color}}">
-    <span class="absolute right-10 text-xl {{this.theme.info_text_color}}">점수: {{ score$ | async }}</span>
+    <button *ngIf="gameStarted" (click)="onRefreshButtonClick()" class="absolute w-8 h-8 left-1 top-1">
+      <img src="assets/images/refresh.png">
+    </button>
+    <span class="absolute right-10 text-xl {{this.theme.info_text_color}}" *ngIf="gameStarted">점수: {{ score$ | async }}</span>
     <span class="absolute right-32 text-xl {{this.theme.info_text_color}}" *ngIf="gameStarted">남은 시간: {{ timeRemaining }}초</span>
     <div *ngIf="!gameStarted" class="flex flex-col justify-center items-center w-full h-full">
       <button (click)="startGame()"  class="flex {{this.theme.button_color}}  items-center py-1 px-5 h-16 shadow-md rounded-md text-2xl">

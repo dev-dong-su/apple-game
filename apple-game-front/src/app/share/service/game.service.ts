@@ -14,12 +14,15 @@ export class GameService {
   public gameOver: boolean = false;
   private baseURL = environment.BASE_URL;
   private gameSeesionId: number = 0;
+  private startTime: Date;
 
   constructor(
     private http: HttpClient,
     private error: HandleErrorService,
     private localStorageService: LocalStorageService
-  ) {}
+  ) {
+    this.startTime = new Date();
+  }
 
   getHttpOptions() {
     const token = this.localStorageService.getLocalStorageItem('access_token');
@@ -37,11 +40,17 @@ export class GameService {
     }
   }
 
+  updateStartTime(): void {
+    this.startTime = new Date();
+  }
+
   updateScore(newScore: number): void {
     this._score.next(newScore);
   }
 
   startGame(username: string): Observable<any> {
+    this.updateStartTime();
+
     return this.http
       .post<any>(
         `${this.baseURL}/game/start/`,
@@ -58,10 +67,17 @@ export class GameService {
 
   endGame(new_score: number): Observable<any> {
     this.gameOver = true;
+    const endTime = new Date();
+
     return this.http
       .post<any>(
         `${this.baseURL}/game/end/`,
-        { session_id: this.gameSeesionId, new_score: new_score },
+        {
+          session_id: this.gameSeesionId,
+          new_score: new_score,
+          start_time: this.startTime.toISOString(),
+          end_time: endTime.toISOString(),
+        },
         this.getHttpOptions()
       )
       .pipe(
