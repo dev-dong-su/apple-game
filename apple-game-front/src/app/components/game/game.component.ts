@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@app/share/models/user.model';
 import { GameService } from '@app/share/service/game.service';
@@ -6,6 +6,7 @@ import { LocalStorageService } from '@app/share/service/local-storage.service';
 import { ThemeService } from '@app/share/service/theme.service';
 import { UserService } from '@app/share/service/user.service';
 import { Observable } from 'rxjs/internal/Observable';
+import { AppleGameComponent } from './apple-game/apple-game.component';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
@@ -22,10 +23,13 @@ export class GameComponent implements OnInit {
   theme: any;
   isMobile: boolean = false;
 
+  @ViewChild(AppleGameComponent) appleGameComponent!: AppleGameComponent;
+
   constructor(
     private localStorage: LocalStorageService,
     private gameService: GameService,
     private themeService: ThemeService,
+    private userService: UserService,
     private router: Router
   ) {
     this.score$ = gameService.score$;
@@ -55,13 +59,24 @@ export class GameComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const user = this.localStorage.getLocalStorageItem('user');
+    let user = this.localStorage.getLocalStorageItem('user');
+    this.userService.addUser(user.username).subscribe(() => {
+      user = this.localStorage.getLocalStorageItem('user');
+
+      this.username = user.username;
+      if (user.best_score) {
+        this.bestScore = user.best_score;
+      }
+    });
     this.theme = this.themeService.getTheme();
-    this.username = user.username;
-    if (user.best_score) {
-      this.bestScore = user.best_score;
-    }
     this.isMobile = this.themeService.isMobileDevice();
+  }
+
+  onRefreshButtonClick(): void {
+    this.gameService.updateStartTime();
+    this.timeRemaining = 120;
+    this.appleGameComponent.refreshCanvas();
+    this.gameService.updateScore(0);
   }
 
   changeTheme(): void {

@@ -7,7 +7,8 @@ import {
 } from '@angular/core';
 import { GameService } from '@app/share/service/game.service';
 import { ThemeService } from '@app/share/service/theme.service';
-import { DrawCanvas } from '@components/game/apple-game/modules/draw-canvas';
+import { DrawCanvas } from './modules/draw-canvas';
+
 @Component({
   selector: 'app-apple-game',
   templateUrl: './apple-game.component.html',
@@ -38,6 +39,10 @@ export class AppleGameComponent implements OnDestroy, OnInit {
 
     this.drawCanvas.init();
     this.drawCanvas.update();
+  }
+
+  refreshCanvas(): void {
+    this.drawCanvas.generateApples();
   }
 
   ngOnDestroy(): void {
