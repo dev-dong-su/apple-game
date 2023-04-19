@@ -31,6 +31,11 @@ export class MainComponent implements OnInit {
     this.isMobile = this.themeService.isMobileDevice();
   }
 
+  clearLocalStorage(): void {
+    this.localStorageService.deleteLocalStorageItem('access_token');
+    this.localStorageService.deleteLocalStorageItem('user');
+  }
+
   userNameLength(): number {
     return (this.username || '').length;
   }
