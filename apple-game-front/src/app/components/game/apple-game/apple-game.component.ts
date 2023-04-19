@@ -43,6 +43,7 @@ export class AppleGameComponent implements OnDestroy, OnInit {
 
   refreshCanvas(): void {
     this.drawCanvas.generateApples();
+    this.drawCanvas.resetScore();
   }
 
   ngOnDestroy(): void {
