@@ -1,12 +1,12 @@
 import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '@app/share/models/user.model';
 import { GameService } from '@app/share/service/game.service';
 import { LocalStorageService } from '@app/share/service/local-storage.service';
 import { ThemeService } from '@app/share/service/theme.service';
 import { UserService } from '@app/share/service/user.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { AppleGameComponent } from './apple-game/apple-game.component';
+
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
