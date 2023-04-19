@@ -34,6 +34,10 @@ export class DrawCanvas {
     this.generateApples();
   }
 
+  resetScore(): void {
+    this.score = 0;
+  }
+
   destroy(): void {
     window.onresize = null;
     this.canvas.onmousedown = null;
